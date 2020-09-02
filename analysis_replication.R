@@ -18,7 +18,7 @@
 # optional # install.packages("sjPlot"); install.packages("lattice");
 
 # Notes on strict CFA; important parts of the code; missing fiml (there was very little missing data, see methods)
-# fit_strict <- cfa(strict, data = tests, mimic = "mplus", estimator='mlr', missing='fiml')
+# fit_strict <- lavaan::cfa(strict, data = tests, mimic = "mplus", estimator='mlr', missing='fiml')
 # factor_scores <- as.data.frame(predict(fit_strict)) # getting factor scores
 # factor_scores$t2 <- factor_scores$t2/sd(factor_scores$t1)
 # factor_scores$t3 <- factor_scores$t3/sd(factor_scores$t1)
