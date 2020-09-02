@@ -14,7 +14,7 @@
 #### #### #### #### #### #### ####
 
 # mandatory
-# install.packages("ggplot2"); install.packages("data.table"); install.packages("lmer")
+# install.packages("ggplot2"); install.packages("data.table"); install.packages("lmer"); install.packages("AICcmodavg")
 # optional # install.packages("sjPlot"); install.packages("lattice");
 
 # Notes on strict CFA; important parts of the code; missing fiml (there was very little missing data, see methods)
@@ -89,7 +89,7 @@ AIC(dcoded_tplan_inter) - AIC(m3.2) # a little bit worse 2 AIC, probably because
 #### #### #### #### #### #### ####
 
 #### short story on convergence ####
-# it is our coding of time, if we use 0, 1, 2; which is common in the literature the problem disappears
+# it is our coding of time, if we use 0, 1, 2; which is common in the literature the problem disappears and results stay the same
 
 # f$time_recoded <- recode(f$time,`0` = 0L, `4` = 1L, `6` = 2L)
 # m2.1_recodedT <- lmer(Math_Factor ~ time_recoded + training_time + age + cohort + (time_recoded | account_id), f, REML = F)
@@ -117,6 +117,7 @@ AIC(dcoded_tplan_inter) - AIC(m3.2) # a little bit worse 2 AIC, probably because
 # lattice::qqmath(m3.2, id = .05)
 #plt_3wayinter <- plot_model(m3.2, type = "pred", terms = c("time", "rot [0, 1]", "nvr_dummy"), ci.lvl = NA, 
 #                            legend.title = "Rotation Group")
+
 
 # lastly because NVR has so little variance it could be argued it should be dummy coded instead
 f$nvr_dummy <- f$nvr_porportions > 0
