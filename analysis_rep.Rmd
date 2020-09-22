@@ -63,6 +63,8 @@ f$time <- as.numeric(as.character(f$time)) # making time numeric for random slop
 
 table(f$cohort, f$training_plan_id) %>% kableExtra::kable(caption = "Number of subjects per cohort by training plan.") %>% kableExtra::kable_styling()
 
+psych::describeBy(f$Math_Factor, f$time)
+
 ggplot(f, aes(x = Math_Factor, color = as.character(time))) +
   geom_line(stat="density") +
   cowplot::theme_half_open() +
@@ -99,6 +101,17 @@ results_lmer_basemods; # clearly showing the model fit imporving, yet these are 
 # the models fail to converge, this is not an issue, we will come back to it.
 ```
 
+```{r for the psychologists dcoded tplans}
+
+dcoded_tplan <- lmer(Math_Factor ~ time + training_plan_id + age + cohort + training_time + training_time:time + (time | account_id), f, REML = F)
+dcoded_tplan_inter <- lmer(Math_Factor ~ time*training_plan_id + age + cohort + training_time + training_time:time + (time | account_id), f, REML = F)
+AIC(dcoded_tplan_inter) - AIC(dcoded_tplan) # -28 AIC dif better
+AIC(dcoded_tplan_inter) - AIC(m2.2) # a little bit worse 2 AIC, probably because of the unnecessary extra terms
+
+
+```
+
+
 The AIC difference clearly show the model fit improving, as expected...
 
 ```{r main model, include=F, echo=F}
@@ -106,29 +119,83 @@ The AIC difference clearly show the model fit improving, as expected...
 m3.1 <- lmer(Math_Factor ~ time + age + cohort + training_time + training_time:time + nvr_porportions + rotcombi_porportions + (time | account_id), f, REML = F)
 # seeing how these effect math improvement
 m3.2 <- lmer(Math_Factor ~ time + age + cohort + training_time + training_time:time + nvr_porportions + rotcombi_porportions + nvr_porportions:time + rotcombi_porportions:time + (time | account_id), f, REML = F)
+
+AIC(dcoded_tplan_inter) - AIC(m3.2) # a little bit worse 2 AIC, probably because of the unnecessary extra terms with dummy coding
+
 ```
 
+
 ### The AIC table for different types of training
+
+```{r dcoded model AIC table}
+results_dcoded <- AICcmodavg::aictab(c(m2.2, dcoded_tplan, dcoded_tplan_inter), modnames = c('Default (inter)', 'tplans fixed','tplans interaction'))
+results_spatialcognition
+
+```
+
+
 ```{r main model AIC table}
 results_spatialcognition <- AICcmodavg::aictab(c(m2.2, m3.1, m3.2), modnames = c('Default (inter)', 'nvr/rot fixed','nvr/rot interaction'))
 results_spatialcognition
 
 ```
-We see that the interaction model is a much better fit than the default (spatial cognitive domains ignored) or the fixed effects (baseline difference's of domains).
+We see that the interaction model is a much better fit than the default (i.e., spatial cognitive domains ignored) or the fixed effects (baseline difference's of domains). This is both the case when we code for the amount of rotation and nvr or dummy code the training plans.
 
 ```{r plot of coefs}
+library(patchwork); library(sjPlot)
+sjPlot::plot_model(m3.2) + theme_minimal()
+
 
 # sjPlot::plot_model(m3.2, type = "diag") # looks a lot like m2.2 which is okay (not the end of the world diagnostics) More tasks &/or more timepoints would've helped
 # lattice::qqmath(m3.2, id = .05)
 
+
 ```
+
+
+### Model treating tangram and 2d mental rotation seperate
+
+<br>
+This model is primarily for the figure and to make sure our a priori decision of combining 2d mental rotation with tangram was sound.
+
+
+```{r figure model}
+# this model is primarily for the figure and to make sure our a priori decision of combining 2d mental rotation with tangram was sound.
+# mixed models are better
+
+slopes <- data.table(account_id = levels(m2.1@flist$account_id), 
+                     Slopes = coef(m2.1)$account_id$time,
+                     Intercept = coef(m2.1)$account_id[,1])
+
+slopes <- slopes[f[, .(account_id, training_plan_id, nvr, wm, rot, tang)], on = "account_id"]
+
+magnitude_assess <- lm(Slopes ~ Intercept + nvr + wm + rot + tang, data = slopes) # this might have a different n, since you aren't including the cluster indies
+options(scipen = 999)
+summary(lm.beta::lm.beta(magnitude_assess))
+
+# now for the plot
+slopes$Slopes.std <- as.numeric(scale(slopes$Slopes)) # making the DV standardized, we want to show minuites
+
+magnitude_assess.std <- lm(Slopes.std ~ Intercept + nvr + wm + rot + tang, data = slopes)
+summary(magnitude_assess.std)
+
+jtools::plot_coefs(magnitude_assess.std) + coord_flip()
+
+car::linearHypothesis(magnitude_assess.std, "rot = wm")
+car::linearHypothesis(magnitude_assess.std, "tang = wm")
+car::linearHypothesis(magnitude_assess.std, "tang = rot")
+
+```
+
+
+
 
 
 ### Model rohbustness checking
 
 Checking the rohbustness of the result with outliers out. We used the Tukey Method to remove outliers by time point, there was a total of **code** data points representing **code** subjects. These subjects did not meaninfully change the result, we report the model with outliers included.
 
-```{r outs, }
+```{r outs}
 
 # checking the rohbustness of the result with outliers out
 
@@ -149,14 +216,6 @@ AIC(m3.2_outs) - AIC(m3.1_outs)
 
 fixef(m3.2)[12]; fixef(m3.2_outs)[12]
 fixef(m3.2)[13]; fixef(m3.2_outs)[13]
-
-
-# do the same with the tplan model
-
-
-# order plans
-
-
 ```
 
 
