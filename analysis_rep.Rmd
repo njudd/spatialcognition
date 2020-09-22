@@ -31,7 +31,20 @@ This script will replicate the main finding using mixed effects models it is not
 ```{r load data, include=F, echo=F}
 f <- fread("~/Projects/R_projects/spatialcognition/factor_data.csv")
 
-str(f)
+# perscribed tplan percentages
+tplans <- data.table(training_plan_id = c(199,203,204,218,219), 
+           math = c(.485,.50,.50,.488,.488), 
+           wm = c(.485,.35,.35,.215,.215),
+           nvr = c(0,.135,0,0,.10),
+           rot = c(0,0,.135,.10,.10),
+           tang = c(.03,.015,.015,.20,.10))
+
+cols <- names(tplans)[c(2:6)]
+f <- tplans[f, on = "training_plan_id"]
+#f$rotcombi_porportions <- f$rot + f$tang
+#f$nvr_porportions <- f$nvr
+f <- f[, (cols) := lapply(.SD, function(x) x*as.numeric(training_time)), .SDcols = cols] # multiplying by their training time for later analysis
+
 # things that should be dummy coded in the model
 f$account_id <- as.character(f$account_id)
 f$training_plan_id <- factor(f$training_plan_id, 
@@ -41,6 +54,7 @@ f$training_time <- as.character(f$training_time)
 
 unique(f$time) # double checking time is coded 0, 4, 6
 f$time <- as.numeric(as.character(f$time)) # making time numeric for random slopes
+
 
 ```
 
