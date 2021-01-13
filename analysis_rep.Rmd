@@ -129,7 +129,7 @@ AIC(dcoded_tplan_inter) - AIC(m3.2) # a little bit worse 2 AIC, probably because
 
 ```{r dcoded model AIC table}
 results_dcoded <- AICcmodavg::aictab(c(m2.2, dcoded_tplan, dcoded_tplan_inter), modnames = c('Default (inter)', 'tplans fixed','tplans interaction'))
-results_spatialcognition
+results_dcoded
 
 ```
 
