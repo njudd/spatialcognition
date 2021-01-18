@@ -18,12 +18,12 @@ output: html_document
 ```{r setup, include=FALSE, echo = T}
 knitr::opts_chunk$set(echo = F)
 
-# install.packages("ggplot2"); install.packages("data.table"); install.packages("lmer"); install.packages("AICcmodavg"); install.packages("AICcmodavg"); install.packages("car")
+# install.packages("ggplot2"); install.packages("data.table"); install.packages("lmer"); install.packages("AICcmodavg"); install.packages("AICcmodavg"); install.packages("car"); install.packages("sjPlot"); install.packages("ggsignif")
 
 
 # optional # install.packages("sjPlot"); install.packages("lattice"); install.packages("ggstance"); install.packages("jtools")
 set.seed(42)
-library(data.table); library(lme4); library(tidyverse); library(AICcmodavg)
+library(data.table); library(lme4); library(tidyverse); library(AICcmodavg); library(sjPlot)
 ```
 
 ## Training spatial cognition enhances mathematical learning - a randomized study in 17,000 children
@@ -191,33 +191,32 @@ car::linearHypothesis(magnitude_assess.std, "tang = rot")
 
 ```{r, plotting results}
 
-sjPlot::plot_model(dcoded_tplan_inter, type = "int")
-
-sjPlot::plot_model(m3.2, type = "int")
-
+# sjPlot::plot_model(dcoded_tplan_inter, type = "int")
+# sjPlot::plot_model(m3.2, type = "int")
 
 
-library(ggsignif)
-p<- ggplot(data_ct, aes(x=training_mins, y=Estimate, fill = training_mins)) + 
-  geom_bar(stat="identity", position=position_dodge()) +
-  geom_errorbar(aes(ymin=Estimate-se, ymax=Estimate+se), width=.2,
-                position=position_dodge(.9)) + 
-  theme_minimal(base_size = 35) +
-  labs(y = "Mathematical improvement", x = "\nEffect per minute of training") +
-  scale_fill_manual(values=RColorBrewer::brewer.pal(11, 'Spectral')[(8:11)]) +
-  theme(legend.position = "none",
-        panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank())+
-  coord_cartesian(ylim=c(0,.04)) + 
-  geom_signif(comparisons=list(c("Tangram", "vs-WM")), annotations="", y_position = .040, tip_length = .0, vjust=0.4, textsize = 10) +
-  geom_signif(comparisons=list(c("2D Rot", "vs-WM")), annotations="", y_position = .038, tip_length = .0, vjust=0.4, textsize = 10) +
-  geom_signif(comparisons=list(c("2D Rot", "Tangram")), annotations="", y_position = .036, tip_length = 0, vjust=0.4, textsize = 6) +
-  geom_signif(comparisons=list(c("vs-WM", "NVR")), annotations="", y_position = .036, tip_length = 0, vjust=0.4, textsize = 6)
+# library(ggsignif)
+# p<- ggplot(data_ct, aes(x=training_mins, y=Estimate, fill = training_mins)) + 
+#   geom_bar(stat="identity", position=position_dodge()) +
+#   geom_errorbar(aes(ymin=Estimate-se, ymax=Estimate+se), width=.2,
+#                 position=position_dodge(.9)) + 
+#   theme_minimal(base_size = 35) +
+#   labs(y = "Mathematical improvement", x = "\nEffect per minute of training") +
+#   scale_fill_manual(values=RColorBrewer::brewer.pal(11, 'Spectral')[(8:11)]) +
+#   theme(legend.position = "none",
+#         panel.grid.minor.x=element_blank(),panel.grid.major.x=element_blank())+
+#   coord_cartesian(ylim=c(0,.04)) + 
+#   geom_signif(comparisons=list(c("Tangram", "vs-WM")), annotations="", y_position = .040, tip_length = .0, vjust=0.4, textsize = 10) +
+#   geom_signif(comparisons=list(c("2D Rot", "vs-WM")), annotations="", y_position = .038, tip_length = .0, vjust=0.4, textsize = 10) +
+#   geom_signif(comparisons=list(c("2D Rot", "Tangram")), annotations="", y_position = .036, tip_length = 0, vjust=0.4, textsize = 6) +
+#   geom_signif(comparisons=list(c("vs-WM", "NVR")), annotations="", y_position = .036, tip_length = 0, vjust=0.4, textsize = 6)
 
 
-dd <- get_model_data(ct, type = "est")
+dd <- get_model_data(magnitude_assess, type = "est")
 dd$term <- recode(dd$term, nvr = 'NVR', wm = 'vs-WM', rot = '2D Rot', tang = "Tangram")
 dd$term <-factor(dd$term, levels = c('Tangram', '2D Rot', 'vs-WM', 'NVR'))
 
+library(ggsignif)
 fig3_natHuman <- ggplot(dd, aes(x=term, y=estimate, ymin=conf.low, ymax=conf.high, color = term)) +
   geom_pointrange(size = 2.5) +
   scale_color_manual(values=RColorBrewer::brewer.pal(11, 'Spectral')[(8:11)]) + 
