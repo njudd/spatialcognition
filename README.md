@@ -21,7 +21,7 @@ This repository includes the data and the code to reproduce the main analysis sh
 
 This code was rewritten specifically for this repository. All reported results are from the local data and code, yet there should not be a discrepancy.
 
-| [Preprint](https://psyarxiv.com/z3pb7/) | [Cognition Matters](https://cognitionmatters.org/) | [Lab home page](http://www.klingberglab.se/torkel-klingberg/)  |
+| [Preprint](https://psyarxiv.com/z3pb7/) | [Cognition Matters](https://cognitionmatters.org/) | [Lab home page](http://www.klingberglab.se)  |
 | :---:   | :-: | :-: |
 
 
