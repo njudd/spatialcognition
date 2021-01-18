@@ -19,6 +19,5 @@ This repository includes the data and the code to reproduce the main analysis sh
 This code was rewritten specifically for this repository. All reported results are from the local data and code, yet there should not be a discrepancy.
 
 
-
-
+![text](cover_cropped.png)
 
