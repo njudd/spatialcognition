@@ -10,6 +10,9 @@ Jan 13th, 2012 <br>
 #### Abstract 
 Spatial and mathematical abilities are strongly associated. Here we analyzed data from 17,648 children, aged 6-8 years, who performed 7 weeks of mathematical training together with randomly assigned, spatial cognitive training with tasks demanding more of spatial manipulation (mental rotation or tangram), maintenance of spatial information (a visuo-spatial working memory task) or spatial, non-verbal reasoning. We found that what type of cognitive training children performed had a significant impact on mathematical learning, with training of visuo-spatial working memory and reasoning being the most effective. This large, community-based study shows that spatial cognitive training can result in transfer to academic abilities and that reasoning ability and maintenance of spatial information is relevant for math learning in young children.
 
+| ![Fig1](Fig3.png) | ![Fig2](fig3_NatHumanBehav_pvals.png) |
+| :---------------: | :-----------------------------------: |
+
 #### Article
 See [Nature Human Behaviour](insert.link) for the latest version of the manuscript. There is a preprint on [PsyArix](https://psyarxiv.com/z3pb7/) which includes extended supplementary information.
 
