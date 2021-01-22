@@ -1,5 +1,5 @@
 
-#Training spatial cognition enhances mathematical learning in a randomized study of 17,000 children
+# Training spatial cognition enhances mathematical learning in a randomized study of 17,000 children
 
 
 
