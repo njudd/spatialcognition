@@ -6,16 +6,6 @@ date: "9/2/2020"
 output: html_document
 ---
 
-# To do
-
-- suppress error messages
-- check that n is the same and that the results match the SI tables
-- check spelling of everything
-
-- center the value of the math factor by the first timepoint
-- make sure coef & p-vals of the first 2 analyses are the same
-
-
 
 ```{r setup, include=FALSE, echo = T}
 knitr::opts_chunk$set(echo = F)
@@ -75,6 +65,10 @@ ggplot(f, aes(x = Math_Factor, color = as.character(time))) +
   labs(x = "Math factor scores", color = "Week of test")
 
 ```
+
+
+For likilhood ratio tests we switch REML = F.
+https://stats.stackexchange.com/questions/48671/what-is-restricted-maximum-likelihood-and-when-should-it-be-used
 
 
 
@@ -152,6 +146,30 @@ library(patchwork); library(sjPlot)
 sjPlot::plot_model(m3.2) + theme_minimal()
 
 
+
+plt_for_git <- sjPlot::plot_model(dcoded_tplan_inter, type = "int")
+
+data_for_plt_tplans <- as.data.frame(get_model_data(dcoded_tplan_inter, type = "int")[[1]])
+
+# making the first time point start at zero
+data_for_plt_tplans$predicted <- data_for_plt_tplans$predicted + abs(mean(data_for_plt_tplans$predicted[data_for_plt_tplans$x==0]))
+
+colnames(data_for_plt_tplans)[6] <- "Training_Groups"
+plt_for_git <- ggplot(data_for_plt_tplans, aes(x, predicted, color = Training_Groups)) +
+  geom_line() +
+  theme_minimal() +
+  labs(y = "Math factor improvement (sd)", x = "Weeks of training") +
+  theme(legend.position = c(0.8, 0.3))
+
+
+# plt_for_git <- plt_for_git[[1]] +
+#   theme_minimal() +
+#   labs(y = "Math Improvement", x = "Weeks of training",
+#        title = "Improvement between training plans")
+# sjPlot::plot_model(m3.2, type = "int")
+
+# ggsave('~/Projects/R_projects/spatialcognition/tplan_improve.png', plt_for_git)
+
 # sjPlot::plot_model(m3.2, type = "diag") # looks a lot like m2.2 which is okay (not the end of the world diagnostics) More tasks &/or more timepoints would've helped
 # lattice::qqmath(m3.2, id = .05)
 
@@ -192,20 +210,6 @@ car::linearHypothesis(magnitude_assess.std, "tang = rot")
 ```
 
 ```{r, plotting results}
-
-plt_for_git <- sjPlot::plot_model(dcoded_tplan_inter, type = "int")
-
-
-plot_model(dcoded_tplan_inter, type = "pred", terms = c("training_plan_id", "time[6]")) + 
-    theme_minimal() + labs(title = "Predicted Math values after 7 weeks")
-
-
-plt_for_git <- plt_for_git[[1]] +
-  theme_minimal() +
-  labs(y = "Math Improvement", x = "Weeks of training",
-       title = "Improvement between training plans")
-# sjPlot::plot_model(m3.2, type = "int")
-
 
 # library(ggsignif)
 # p<- ggplot(data_ct, aes(x=training_mins, y=Estimate, fill = training_mins)) + 
@@ -283,6 +287,8 @@ fixef(m3.2)[13]; fixef(m3.2_outs)[13]
 #### #### #### #### #### #### ####
 #### convergence & diagnostics ####
 #### #### #### #### #### #### ####
+
+# it also changes depending on REML = F or T
 
 #### short story on convergence ####
 # it is our coding of time, if we use 0, 1, 2; which is common in the literature the problem disappears and results stay the same
