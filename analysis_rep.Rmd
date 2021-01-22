@@ -9,9 +9,11 @@ output: html_document
 # To do
 
 - suppress error messages
-- maybe do all 3 analyses (you could enter the data raw)
 - check that n is the same and that the results match the SI tables
 - check spelling of everything
+
+- center the value of the math factor by the first timepoint
+- make sure coef & p-vals of the first 2 analyses are the same
 
 
 
@@ -191,7 +193,17 @@ car::linearHypothesis(magnitude_assess.std, "tang = rot")
 
 ```{r, plotting results}
 
-# sjPlot::plot_model(dcoded_tplan_inter, type = "int")
+plt_for_git <- sjPlot::plot_model(dcoded_tplan_inter, type = "int")
+
+
+plot_model(dcoded_tplan_inter, type = "pred", terms = c("training_plan_id", "time[6]")) + 
+    theme_minimal() + labs(title = "Predicted Math values after 7 weeks")
+
+
+plt_for_git <- plt_for_git[[1]] +
+  theme_minimal() +
+  labs(y = "Math Improvement", x = "Weeks of training",
+       title = "Improvement between training plans")
 # sjPlot::plot_model(m3.2, type = "int")
 
 
