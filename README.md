@@ -9,7 +9,7 @@ Karolinska Institute <br>
 Stockholm, Sweden <br>
 Jan 13th, 2021 <br>
 
-| [UCL Center for Educational Neuroscience talk](https://www.youtube.com/watch?v=hSxlmVWxZnA) | [Preprint PDF](https://psyarxiv.com/z3pb7/) | [Cognition Matters](https://cognitionmatters.org/) |  
+| [UCL Center for Educational Neuroscience talk](https://www.youtube.com/watch?v=hSxlmVWxZnA) | [PsyArxiv Preprint PDF](https://psyarxiv.com/z3pb7/) | [Cognition Matters](https://cognitionmatters.org/) |  
 | :---:   | :-: | :-: |
 
 <br>
