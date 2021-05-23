@@ -9,8 +9,11 @@ Karolinska Institute <br>
 Stockholm, Sweden <br>
 Jan 13th, 2021 <br>
 
-| [UCL Center for Educational Neuroscience talk](https://www.youtube.com/watch?v=hSxlmVWxZnA) | [PsyArxiv Preprint PDF](https://psyarxiv.com/z3pb7/) | [Cognition Matters](https://cognitionmatters.org/) |  [Nature Human Behaviour PDF](https://rdcu.be/ck9fP)
-| :---:   | :-: | :-: | :-: |
+In collaberation with [Cognition Matters](https://cognitionmatters.org/) mathematical training app 'Vektor'.
+
+
+| [UCL Center for Educational Neuroscience talk](https://www.youtube.com/watch?v=hSxlmVWxZnA) | [PsyArxiv Preprint PDF](https://psyarxiv.com/z3pb7/) |  [Nature Human Behaviour PDF](https://rdcu.be/ck9fP)
+| :---:   | :-: | :-: |
 
 <br>
 
